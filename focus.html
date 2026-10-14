@@ -64,6 +64,11 @@
     <section class="timer" aria-labelledby="timerHeading">
       <h2 id="timerHeading" class="visually-hidden">Focus Timer</h2>
 
+      <svg class="timer-ring" id="timerRing" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+        <rect class="timer-ring-track" id="timerRingTrack" fill="none" vector-effect="non-scaling-stroke" />
+        <rect class="timer-ring-bar" id="timerRingBar" fill="none" vector-effect="non-scaling-stroke" />
+      </svg>
+
       <div id="timerDisplay" class="timer-display" role="timer" aria-live="polite">25:00</div>
 
       <div class="mode-switch" role="group" aria-label="Session type">

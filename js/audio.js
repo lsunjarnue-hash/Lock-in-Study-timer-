@@ -29,9 +29,12 @@ function saveAmbientChoice(choice) {
 
 function loadAmbientVolume() {
   try {
-    const value = Number(localStorage.getItem(LOCKIN_AMBIENT_VOLUME_KEY));
-    if (value >= 0 && value <= 100) {
-      return value;
+    const raw = localStorage.getItem(LOCKIN_AMBIENT_VOLUME_KEY);
+    if (raw !== null && raw !== "") {
+      const value = Number(raw);
+      if (value >= 0 && value <= 100) {
+        return value;
+      }
     }
   } catch (error) {}
   return 50;

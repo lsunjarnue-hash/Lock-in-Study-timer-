@@ -11,6 +11,11 @@ let endTimeoutId = null;
 let lastShownSecond = null;
 
 const timerDisplay = document.getElementById("timerDisplay");
+const timerElement = document.querySelector(".timer");
+const timerRing = document.getElementById("timerRing");
+const timerRingTrack = document.getElementById("timerRingTrack");
+const timerRingBar = document.getElementById("timerRingBar");
+let ringPerimeter = 0;
 const focusModeBtn = document.getElementById("focusModeBtn");
 const breakModeBtn = document.getElementById("breakModeBtn");
 const durationInput = document.getElementById("durationInput");
@@ -69,6 +74,56 @@ function formatTime(totalSeconds) {
 
 function render() {
   timerDisplay.textContent = formatTime(remainingSeconds);
+  updateTimerRing();
+}
+
+function setupTimerRing() {
+  if (!timerElement || !timerRing || !timerRingBar) {
+    return;
+  }
+  const width = timerElement.clientWidth;
+  const height = timerElement.clientHeight;
+  if (width <= 0 || height <= 0) {
+    return;
+  }
+
+  const inset = 4;
+  const radius = 24;
+  const rectWidth = Math.max(0, width - inset * 2);
+  const rectHeight = Math.max(0, height - inset * 2);
+
+  timerRing.setAttribute("viewBox", "0 0 " + width + " " + height);
+
+  [timerRingTrack, timerRingBar].forEach(function (rect) {
+    if (!rect) {
+      return;
+    }
+    rect.setAttribute("x", inset);
+    rect.setAttribute("y", inset);
+    rect.setAttribute("width", rectWidth);
+    rect.setAttribute("height", rectHeight);
+    rect.setAttribute("rx", radius);
+    rect.setAttribute("ry", radius);
+  });
+
+  ringPerimeter = timerRingBar.getTotalLength();
+  timerRingBar.style.strokeDasharray = String(ringPerimeter);
+  if (timerRingTrack) {
+    timerRingTrack.style.strokeDasharray = String(ringPerimeter);
+  }
+  updateTimerRing();
+}
+
+function updateTimerRing() {
+  if (!timerRingBar || ringPerimeter <= 0) {
+    return;
+  }
+  const total = totalSecondsForMode(currentMode);
+  const elapsed = total - remainingSeconds;
+  const progress = total > 0 ? elapsed / total : 0;
+  const clamped = Math.max(0, Math.min(1, progress));
+  timerRingBar.style.strokeDashoffset = String(ringPerimeter * (1 - clamped));
+  timerRingBar.style.strokeOpacity = clamped <= 0 ? "0" : "1";
 }
 
 function showRandomQuote() {
@@ -343,6 +398,16 @@ breakModeBtn.addEventListener("click", function () {
 render();
 pauseBtn.disabled = true;
 showRandomQuote();
+
+setupTimerRing();
+if (window.ResizeObserver && timerElement) {
+  new ResizeObserver(function () {
+    setupTimerRing();
+  }).observe(timerElement);
+} else {
+  window.addEventListener("resize", setupTimerRing);
+}
+window.addEventListener("load", setupTimerRing);
 
 setInterval(showRandomQuote, 3 * 60 * 1000);
 
