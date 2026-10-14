@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Focus — LOCK IN</title>
+  <link rel="stylesheet" href="assets/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="photoOverlay" class="photo-overlay" aria-hidden="true"></div>
+
+  <p class="focus-brand" aria-hidden="true">LOCK IN</p>
+
+  <nav class="nav" aria-label="Main navigation">
+    <a class="nav-link is-active" href="focus.html" aria-current="page">Focus</a>
+    <a class="nav-link" href="settings.html">Customize</a>
+  </nav>
+
+  <div class="audio-menu">
+    <button id="fullscreenBtn" class="icon-btn" type="button" aria-label="Enter full screen" aria-pressed="false">
+      <svg class="icon-btn-svg" id="fullscreenIconEnter" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+        <path d="M4 9V4h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M20 9V4h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M4 15v5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <svg class="icon-btn-svg" id="fullscreenIconExit" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" hidden>
+        <path d="M9 4v5H4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M15 4v5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M9 20v-5H4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+    <button id="audioMenuBtn" class="icon-btn" type="button" aria-label="Ambient sound" aria-haspopup="true" aria-expanded="false" aria-controls="audioMenuPanel">
+      <svg class="icon-btn-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+        <path d="M9 17V5l10-2v12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <ellipse cx="6.5" cy="17" rx="3" ry="2.4" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <ellipse cx="16.5" cy="15" rx="3" ry="2.4" fill="none" stroke="currentColor" stroke-width="1.8" />
+      </svg>
+    </button>
+    <div id="audioMenuPanel" class="audio-menu-panel" hidden>
+      <p class="audio-menu-title">Ambient sound</p>
+      <button class="audio-option is-active" data-ambient="off" type="button">Off</button>
+      <button class="audio-option" data-ambient="piano" type="button">Piano</button>
+      <button class="audio-option" data-ambient="lofi" type="button">Lo-fi</button>
+      <button class="audio-option" data-ambient="rain" type="button">Rain</button>
+      <button class="audio-option" data-ambient="noise" type="button">Brown noise</button>
+      <button class="audio-option" data-ambient="wind" type="button">Wind</button>
+      <button class="audio-option" data-ambient="ocean" type="button">Ocean</button>
+      <label class="audio-volume" for="audioMenuVolume">
+        <span>Volume</span>
+        <input id="audioMenuVolume" type="range" min="0" max="100" value="50" />
+      </label>
+    </div>
+  </div>
+
+  <main class="container container-center">
+    <section class="quote" aria-label="Motivational quote">
+      <p id="quoteText" class="quote-text" aria-live="polite"></p>
+    </section>
+
+    <section class="timer" aria-labelledby="timerHeading">
+      <h2 id="timerHeading" class="visually-hidden">Focus Timer</h2>
+
+      <div id="timerDisplay" class="timer-display" role="timer" aria-live="polite">25:00</div>
+
+      <div class="mode-switch" role="group" aria-label="Session type">
+        <button id="focusModeBtn" class="mode-btn is-active" type="button">Focus</button>
+        <button id="breakModeBtn" class="mode-btn" type="button">Break</button>
+      </div>
+
+      <div class="duration">
+        <label for="durationInput">Minutes</label>
+        <input id="durationInput" type="number" min="1" max="180" value="25" />
+        <button id="applyDurationBtn" class="btn" type="button">Set</button>
+      </div>
+
+      <div class="controls">
+        <button id="startBtn" class="btn btn-primary" type="button">Start</button>
+        <button id="pauseBtn" class="btn" type="button" disabled>Pause</button>
+        <button id="resetBtn" class="btn" type="button">Reset</button>
+      </div>
+
+      <p id="statusMessage" class="status" role="status"></p>
+    </section>
+
+    <section class="tasks" aria-labelledby="tasksHeading">
+      <button id="tasksToggleBtn" class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#taskPanel" aria-expanded="false" aria-controls="taskPanel">Tasks</button>
+      <div id="taskPanel" class="collapse task-panel">
+        <h2 id="tasksHeading" class="tasks-heading">Today's focus</h2>
+        <div class="task-form">
+          <label class="visually-hidden" for="taskInput">New task</label>
+          <input id="taskInput" type="text" placeholder="What are you working on?" autocomplete="off" />
+          <button id="addTaskBtn" class="btn" type="button">Add</button>
+        </div>
+        <button id="clearDoneBtn" class="btn clear-done" type="button" hidden>Clear completed</button>
+        <p id="tasksStatus" class="status" role="status"></p>
+        <ul id="taskList" class="task-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <p class="focus-hint" aria-hidden="true">Press Esc to exit</p>
+
+  <script src="assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/focus.js"></script>
+  <script src="js/fullscreen.js"></script>
+</body>
+</html>

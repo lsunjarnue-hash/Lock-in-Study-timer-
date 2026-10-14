@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customize — LOCK IN</title>
+  <link rel="stylesheet" href="assets/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="photoOverlay" class="photo-overlay" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Main navigation">
+    <a class="nav-link" href="focus.html">Focus</a>
+    <a class="nav-link is-active" href="settings.html" aria-current="page">Customize</a>
+  </nav>
+
+  <div class="audio-menu">
+    <button id="fullscreenBtn" class="icon-btn" type="button" aria-label="Enter full screen" aria-pressed="false">
+      <svg class="icon-btn-svg" id="fullscreenIconEnter" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+        <path d="M4 9V4h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M20 9V4h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M4 15v5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <svg class="icon-btn-svg" id="fullscreenIconExit" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" hidden>
+        <path d="M9 4v5H4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M15 4v5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M9 20v-5H4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+    <button id="audioMenuBtn" class="icon-btn" type="button" aria-label="Ambient sound" aria-haspopup="true" aria-expanded="false" aria-controls="audioMenuPanel">
+      <svg class="icon-btn-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+        <path d="M9 17V5l10-2v12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <ellipse cx="6.5" cy="17" rx="3" ry="2.4" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <ellipse cx="16.5" cy="15" rx="3" ry="2.4" fill="none" stroke="currentColor" stroke-width="1.8" />
+      </svg>
+    </button>
+    <div id="audioMenuPanel" class="audio-menu-panel" hidden>
+      <p class="audio-menu-title">Ambient sound</p>
+      <button class="audio-option is-active" data-ambient="off" type="button">Off</button>
+      <button class="audio-option" data-ambient="piano" type="button">Piano</button>
+      <button class="audio-option" data-ambient="lofi" type="button">Lo-fi</button>
+      <button class="audio-option" data-ambient="rain" type="button">Rain</button>
+      <button class="audio-option" data-ambient="noise" type="button">Brown noise</button>
+      <button class="audio-option" data-ambient="wind" type="button">Wind</button>
+      <button class="audio-option" data-ambient="ocean" type="button">Ocean</button>
+      <label class="audio-volume" for="audioMenuVolume">
+        <span>Volume</span>
+        <input id="audioMenuVolume" type="range" min="0" max="100" value="50" />
+      </label>
+    </div>
+  </div>
+
+  <main class="container">
+    <h1 class="page-title">Customize</h1>
+
+    <div class="accordion" id="settingsAccordion">
+    <div class="accordion-item settings-section">
+      <h2 class="accordion-header" id="backgroundHeading">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#backgroundPanel" aria-expanded="true" aria-controls="backgroundPanel">Background</button>
+      </h2>
+      <div id="backgroundPanel" class="accordion-collapse collapse show" aria-labelledby="backgroundHeading" data-bs-parent="#settingsAccordion">
+      <div class="accordion-body settings-body">
+        <h3 class="settings-subheading">Ambient colors</h3>
+        <div class="theme-options" role="group" aria-label="Ambient background colors">
+          <button class="theme-btn is-active" data-theme="sage" type="button" aria-pressed="true">
+            <span class="theme-swatch" style="background-color: #d9e4cf"></span>Sage
+          </button>
+          <button class="theme-btn" data-theme="blue" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #cfdee7"></span>Blue
+          </button>
+          <button class="theme-btn" data-theme="ivory" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #f3ede0"></span>Ivory
+          </button>
+          <button class="theme-btn" data-theme="mist" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #d7dee6"></span>Mist
+          </button>
+          <button class="theme-btn" data-theme="lavender" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #e4dcef"></span>Lavender
+          </button>
+          <button class="theme-btn" data-theme="peach" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #f2e0d3"></span>Peach
+          </button>
+          <button class="theme-btn" data-theme="yellow" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #f2eabf"></span>Yellow
+          </button>
+          <button class="theme-btn" data-theme="aurora" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-image: linear-gradient(135deg, #cdb6e6, #bebaee, #bad2ec)"></span>Aurora
+          </button>
+          <button class="theme-btn" data-theme="sunset" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-image: linear-gradient(135deg, #f0caac, #f0c0c8, #dec4e0)"></span>Sunset
+          </button>
+          <button class="theme-btn" data-theme="ocean" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-image: linear-gradient(135deg, #b6dce4, #bad2eb, #c0e8e0)"></span>Ocean
+          </button>
+        </div>
+
+        <h3 class="settings-subheading">Your photo</h3>
+        <div class="photo-controls">
+          <label class="btn" for="photoInput">Choose a photo</label>
+          <input id="photoInput" type="file" accept="image/*" hidden />
+          <button id="removePhotoBtn" class="btn" type="button" hidden>Back to colors</button>
+        </div>
+        <img id="photoPreview" class="photo-preview" alt="Selected background photo preview" hidden />
+
+        <div id="overlayControls" class="overlay-controls" hidden>
+          <span class="overlay-label">Overlay</span>
+          <div class="overlay-modes" role="group" aria-label="Overlay type">
+            <button class="mode-btn is-active" data-overlay="none" type="button">None</button>
+            <button class="mode-btn" data-overlay="dark" type="button">Dark</button>
+            <button class="mode-btn" data-overlay="light" type="button">Light</button>
+          </div>
+          <label class="overlay-strength" for="overlayStrength">
+            Strength
+            <input id="overlayStrength" type="range" min="0" max="60" value="25" />
+          </label>
+        </div>
+        <p id="backgroundStatus" class="status" role="status"></p>
+      </div>
+      </div>
+    </div>
+
+    <div class="accordion-item settings-section">
+      <h2 class="accordion-header" id="soundHeading">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#soundPanel" aria-expanded="false" aria-controls="soundPanel">Sound</button>
+      </h2>
+      <div id="soundPanel" class="accordion-collapse collapse" aria-labelledby="soundHeading" data-bs-parent="#settingsAccordion">
+      <div class="accordion-body settings-body">
+        <h3 class="settings-subheading">Ambient sound</h3>
+        <p class="settings-hint">Generated in your browser. It auto-plays on Focus when you press Start.</p>
+        <div class="ambient-controls" role="group" aria-label="Ambient sound type">
+          <button class="mode-btn is-active" data-ambient="off" type="button">Off</button>
+          <button class="mode-btn" data-ambient="rain" type="button">Rain</button>
+          <button class="mode-btn" data-ambient="noise" type="button">Brown noise</button>
+          <button class="mode-btn" data-ambient="wind" type="button">Wind</button>
+          <button class="mode-btn" data-ambient="ocean" type="button">Ocean</button>
+          <button class="mode-btn" data-ambient="piano" type="button">Piano</button>
+          <button class="mode-btn" data-ambient="lofi" type="button">Lo-fi</button>
+        </div>
+        <label class="settings-slider" for="ambientVolume">
+          Volume
+          <input id="ambientVolume" type="range" min="0" max="100" value="50" />
+        </label>
+        <p id="ambientStatus" class="status" role="status"></p>
+
+        <h3 class="settings-subheading">Timer alarm</h3>
+        <p class="settings-hint">Beeps during the last 5 seconds and when a session ends.</p>
+        <button id="alarmToggleBtn" class="btn" type="button" aria-pressed="true">Alarm sound: On</button>
+      </div>
+      </div>
+    </div>
+    </div>
+  </main>
+
+  <script src="assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/fullscreen.js"></script>
+</body>
+</html>
