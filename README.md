@@ -7,6 +7,11 @@ Welcome to LOCK IN— a minimalist study-with-me website designed to help studen
 🌐 [Visit the Live Website](https://lsunjarnue-hash.github.io/Lock-in-Study-timer-/focus.html)
 
 ---
+🖥️ Website Preview
+
+![LOCK IN Focus Page](lock-in-focus.png)
+
+
 
  ✨ Features
 
