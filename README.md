@@ -10,6 +10,9 @@ Welcome to LOCK IN— a minimalist study-with-me website designed to help studen
 🖥️ Website Preview
 
 ![LOCK IN Focus Page](lock-in-focus.png)
+![LOCK IN Focus Page](lock-in-custom.png)
+
+
 
 
 
