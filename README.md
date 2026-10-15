@@ -4,7 +4,7 @@ LOCK IN — Study With Me
 
 Welcome to LOCK IN— a minimalist study-with-me website designed to help students stay focused, manage their study sessions, and build better study habits.
 
-🌐 [Visit the Live Website](https://lsunjarnue-hash.github.io/Lock-in-Study-timer-/focus.html)
+🌐 [Visit the Live Website](https://lsunjarnue-hash.github.io/Lock-in-Study-timer-/)
 
 ---
 🖥️ Website Preview
