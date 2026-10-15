@@ -186,6 +186,93 @@ body[data-theme="ocean"] .blob {
   opacity: 0.5;
 }
 
+body[data-theme="blush"] {
+  --bg-color: #f6dfe4;
+  --bg-tint-1: #fdf0f3;
+  --bg-tint-2: #eec1cc;
+  --text-color: #4a2e38;
+  --muted-color: #7d5563;
+  --primary-color: #4a2e38;
+  --primary-text: #fdf0f3;
+  --blob-1: rgba(238, 176, 194, 0.85);
+  --blob-2: rgba(248, 216, 226, 0.9);
+  --blob-3: rgba(226, 152, 172, 0.6);
+}
+
+body[data-theme="mint"] {
+  --bg-color: #d2ebe0;
+  --bg-tint-1: #e7f6ee;
+  --bg-tint-2: #aed8c3;
+  --text-color: #2a4038;
+  --muted-color: #527065;
+  --primary-color: #2a4038;
+  --primary-text: #eefaf3;
+  --blob-1: rgba(148, 214, 182, 0.85);
+  --blob-2: rgba(204, 236, 218, 0.9);
+  --blob-3: rgba(120, 196, 160, 0.6);
+}
+
+body[data-theme="sky"] {
+  --bg-color: #d9ebf6;
+  --bg-tint-1: #edf6fb;
+  --bg-tint-2: #b6d6ea;
+  --text-color: #29404f;
+  --muted-color: #557488;
+  --primary-color: #29404f;
+  --primary-text: #f0f8fc;
+  --blob-1: rgba(152, 200, 230, 0.85);
+  --blob-2: rgba(208, 232, 246, 0.9);
+  --blob-3: rgba(130, 180, 216, 0.6);
+}
+
+body[data-theme="lilac"] {
+  --bg-color: #f0e2ee;
+  --bg-tint-1: #f9f0f8;
+  --bg-tint-2: #e2c8de;
+  --text-color: #46304a;
+  --muted-color: #775a76;
+  --primary-color: #46304a;
+  --primary-text: #faf2f9;
+  --blob-1: rgba(226, 176, 216, 0.85);
+  --blob-2: rgba(242, 216, 236, 0.9);
+  --blob-3: rgba(206, 150, 198, 0.6);
+}
+
+body[data-theme="coral"] {
+  --bg-color: #f6ddd2;
+  --bg-tint-1: #fcefe6;
+  --bg-tint-2: #eabfa9;
+  --text-color: #4a322a;
+  --muted-color: #7d5a4c;
+  --primary-color: #4a322a;
+  --primary-text: #fdf3ec;
+  --blob-1: rgba(240, 182, 156, 0.85);
+  --blob-2: rgba(248, 220, 204, 0.9);
+  --blob-3: rgba(230, 160, 136, 0.6);
+}
+
+body[data-theme="cotton"] {
+  --bg-color: #f0e6f2;
+  --bg-tint-1: #faf2fb;
+  --bg-tint-2: #e4d4f0;
+  --text-color: #3e3355;
+  --muted-color: #6c6088;
+  --primary-color: #7a62a8;
+  --primary-text: #ffffff;
+  --blob-1: rgba(244, 198, 216, 0.5);
+  --blob-2: rgba(188, 214, 240, 0.5);
+  --blob-3: rgba(212, 198, 238, 0.45);
+  --blob-4: rgba(236, 210, 236, 0.42);
+}
+
+body[data-theme="cotton"] .bg-blobs::before {
+  opacity: 0.3;
+}
+
+body[data-theme="cotton"] .blob {
+  opacity: 0.5;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -203,6 +290,10 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   padding: 1.25rem 1.1rem 2.75rem;
+  padding-top: max(1.25rem, env(safe-area-inset-top));
+  padding-left: max(1.1rem, env(safe-area-inset-left));
+  padding-right: max(1.1rem, env(safe-area-inset-right));
+  padding-bottom: max(2.75rem, env(safe-area-inset-bottom));
   font-family: var(--font-sans);
   background-color: var(--bg-color);
   background-image:
@@ -551,8 +642,8 @@ body.session-ended .timer-display {
 
 .focus-brand {
   position: fixed;
-  top: 1.4rem;
-  left: 1.6rem;
+  top: max(1.4rem, env(safe-area-inset-top));
+  left: max(1.6rem, env(safe-area-inset-left));
   z-index: 3;
   margin: 0;
   font-family: var(--font-display);
@@ -567,35 +658,54 @@ body.session-ended .timer-display {
   transition: opacity 0.5s ease;
 }
 
-.focus-hint {
+.exit-focus-btn {
   position: fixed;
-  bottom: 1.6rem;
+  bottom: max(1.6rem, env(safe-area-inset-bottom));
   left: 50%;
   z-index: 3;
-  margin: 0;
   transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  font-family: inherit;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.16em;
+  padding: 0.55rem 1.3rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   color: var(--muted-color);
-  opacity: 0;
-  pointer-events: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--hairline);
+  transition: opacity 0.4s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
-@keyframes hint-fade {
-  0% { opacity: 0; }
-  20% { opacity: 0.75; }
-  70% { opacity: 0.75; }
-  100% { opacity: 0; }
+.exit-focus-btn:hover {
+  color: var(--text-color);
+  transform: translateX(-50%) translateY(-1px);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--hairline);
+}
+
+.exit-focus-btn:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
 }
 
 body.is-focusing .focus-brand {
   opacity: 1;
 }
 
-body.is-focusing .focus-hint {
-  animation: hint-fade 5s ease forwards;
+body.is-focusing .exit-focus-btn {
+  opacity: 0.85;
+  pointer-events: auto;
+}
+
+body.is-focusing .back-btn {
+  opacity: 0;
+  pointer-events: none;
 }
 
 body.is-focusing .nav,
@@ -637,12 +747,20 @@ body.is-focusing .timer-display {
 
 .audio-menu {
   position: fixed;
-  top: 1.1rem;
-  right: 1.1rem;
+  top: max(1.1rem, env(safe-area-inset-top));
+  right: max(1.1rem, env(safe-area-inset-right));
   z-index: 4;
   display: flex;
   align-items: center;
   gap: 0.55rem;
+}
+
+.back-btn {
+  position: fixed;
+  top: max(1.1rem, env(safe-area-inset-top));
+  left: max(1.1rem, env(safe-area-inset-left));
+  z-index: 4;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, color 0.2s ease, background 0.2s ease, opacity 0.3s ease;
 }
 
 .icon-btn {
@@ -684,6 +802,10 @@ body.is-focusing .timer-display {
   top: calc(100% + 0.6rem);
   right: 0;
   min-width: 12rem;
+  max-width: calc(100vw - 2rem);
+  max-height: min(72vh, 460px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 0.6rem;
   display: flex;
   flex-direction: column;
@@ -1218,17 +1340,157 @@ body > main {
   animation: rise-in 0.55s ease 0.05s both;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 480px) {
+  body {
+    padding-left: max(0.85rem, env(safe-area-inset-left));
+    padding-right: max(0.85rem, env(safe-area-inset-right));
+  }
+
+  .nav {
+    margin-bottom: 1.25rem;
+  }
+
+  .nav-link {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.85rem;
+  }
+
+  .audio-menu {
+    top: max(0.85rem, env(safe-area-inset-top));
+    right: max(0.85rem, env(safe-area-inset-right));
+    gap: 0.45rem;
+  }
+
+  .back-btn {
+    top: max(0.85rem, env(safe-area-inset-top));
+    left: max(0.85rem, env(safe-area-inset-left));
+  }
+
+  .icon-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
   .timer {
     padding: 1.5rem 1.1rem;
+    gap: 1rem;
+  }
+
+  .timer-display {
+    font-size: clamp(3.25rem, 18vh, 6rem);
   }
 
   .btn {
     padding: 0.7rem 1.1rem;
   }
 
+  .mode-btn {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .duration input {
+    width: 4.25rem;
+  }
+
+  .landing-title {
+    font-size: clamp(2.5rem, 11vw, 3.5rem);
+  }
+
+  .page-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
   .settings-body {
-    padding: 0 1.1rem 1.1rem;
+    padding: 0 1rem 1.1rem;
+  }
+
+  .accordion-button {
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+  }
+
+  .theme-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .overlay-strength input,
+  .settings-slider input {
+    width: 9rem;
+  }
+
+  .task-form {
+    flex-wrap: wrap;
+  }
+
+  .task-form input {
+    min-width: 0;
+  }
+
+  .focus-brand {
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    text-indent: 0.3em;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .container {
+    max-width: 560px;
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    padding: 1.75rem 1.5rem 3rem;
+  }
+
+  .nav {
+    margin-bottom: 2rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 1.4rem;
+    font-size: 0.95rem;
+  }
+
+  .audio-menu {
+    top: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .back-btn {
+    top: 1.5rem;
+    left: 1.5rem;
+  }
+
+  .container {
+    max-width: 640px;
+  }
+
+  .timer {
+    max-width: 560px;
+    padding: 2.4rem 2rem;
+  }
+
+  .landing-title {
+    font-size: clamp(3.5rem, 9vw, 5.5rem);
+  }
+
+  .page-title {
+    font-size: 2.8rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .container {
+    max-width: 600px;
+  }
+
+  .timer {
+    max-width: 520px;
   }
 }
 
@@ -1248,6 +1510,34 @@ body > main {
 
   .timer-display {
     font-size: clamp(3rem, 14vh, 5.5rem);
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .quote {
+    margin-bottom: 0.5rem;
+  }
+
+  .quote-text {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+  }
+
+  .nav {
+    margin-bottom: 0.6rem;
+  }
+
+  .timer {
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .timer-display {
+    font-size: clamp(2.5rem, 12vh, 4rem);
+  }
+
+  .exit-focus-btn {
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
   }
 }
 

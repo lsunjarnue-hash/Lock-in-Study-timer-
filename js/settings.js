@@ -197,6 +197,9 @@ const AMBIENT_LABELS = {
   ocean: "ocean",
   piano: "piano",
   lofi: "lo-fi",
+  "lofi-jazz": "lo-fi jazz",
+  "lofi-beats": "lo-fi beats",
+  "lofi-chill": "lo-fi chill",
 };
 
 ambientChoiceButtons.forEach(function (button) {

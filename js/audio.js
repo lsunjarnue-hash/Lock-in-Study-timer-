@@ -1,6 +1,6 @@
 const LOCKIN_AMBIENT_KEY = "lockinAmbient";
 const LOCKIN_AMBIENT_VOLUME_KEY = "lockinAmbientVolume";
-const AMBIENT_TYPES = ["rain", "noise", "wind", "ocean", "piano", "lofi"];
+const AMBIENT_TYPES = ["rain", "noise", "wind", "ocean", "piano", "lofi", "lofi-jazz", "lofi-beats", "lofi-chill"];
 
 let ambientContext = null;
 let ambientSource = null;
@@ -9,9 +9,10 @@ let ambientType = null;
 let ambientPlaying = false;
 let ambientLfos = [];
 let pianoIntervalId = null;
-let lofiIntervalId = null;
+let lofiTimeoutId = null;
 let lofiStep = 0;
 let lofiNoiseBuffer = null;
+let lofiStyleName = null;
 
 function loadAmbientChoice() {
   try {
@@ -50,6 +51,9 @@ function baseGainFor(type) {
   if (type === "wind") return 0.35;
   if (type === "piano") return 0.9;
   if (type === "lofi") return 0.7;
+  if (type === "lofi-jazz") return 0.65;
+  if (type === "lofi-beats") return 0.75;
+  if (type === "lofi-chill") return 0.55;
   return 0.45;
 }
 
@@ -119,11 +123,12 @@ function stopAmbientAudio() {
     pianoIntervalId = null;
   }
 
-  if (lofiIntervalId !== null) {
-    clearInterval(lofiIntervalId);
-    lofiIntervalId = null;
+  if (lofiTimeoutId !== null) {
+    clearTimeout(lofiTimeoutId);
+    lofiTimeoutId = null;
   }
   lofiStep = 0;
+  lofiStyleName = null;
 
   ambientLfos.forEach(function (lfo) {
     try {
@@ -193,13 +198,80 @@ function startPiano() {
   pianoIntervalId = setInterval(playPianoNote, 1100);
 }
 
-const LOFI_STEP_MS = 187.5;
-const LOFI_CHORDS = [
-  [220.0, 261.63, 329.63, 392.0],
-  [174.61, 220.0, 261.63, 329.63],
-  [130.81, 164.81, 196.0, 246.94],
-  [196.0, 246.94, 293.66, 349.23],
-];
+const LOFI_STYLES = {
+  lofi: {
+    stepMs: 187.5,
+    swing: 0,
+    crackle: 0.05,
+    filterFreq: 1400,
+    kickSteps: [0, 8],
+    snareSteps: [4, 12],
+    hatSteps: [0, 2, 4, 6, 8, 10, 12, 14],
+    bass: null,
+    bassNotes: [],
+    chords: [
+      [220.0, 261.63, 329.63, 392.0],
+      [174.61, 220.0, 261.63, 329.63],
+      [130.81, 164.81, 196.0, 246.94],
+      [196.0, 246.94, 293.66, 349.23],
+    ],
+  },
+  "lofi-jazz": {
+    stepMs: 200,
+    swing: 0.24,
+    crackle: 0.04,
+    filterFreq: 1600,
+    kickSteps: [0],
+    snareSteps: [8],
+    hatSteps: [0, 2, 4, 6, 8, 10, 12, 14],
+    bass: "walk",
+    bassNotes: [146.83, 196.0, 130.81, 110.0],
+    chords: [
+      [146.83, 220.0, 261.63, 349.23],
+      [196.0, 293.66, 349.23, 440.0],
+      [130.81, 196.0, 246.94, 293.66],
+      [110.0, 196.0, 261.63, 329.63],
+    ],
+  },
+  "lofi-beats": {
+    stepMs: 170,
+    swing: 0,
+    crackle: 0.06,
+    filterFreq: 1200,
+    kickSteps: [0, 6, 10],
+    snareSteps: [4, 12],
+    hatSteps: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    bass: "root",
+    bassNotes: [82.41, 65.41, 98.0, 55.0],
+    chords: [
+      [164.81, 196.0, 246.94, 293.66],
+      [130.81, 164.81, 196.0, 261.63],
+      [196.0, 246.94, 293.66, 392.0],
+      [110.0, 164.81, 220.0, 261.63],
+    ],
+  },
+  "lofi-chill": {
+    stepMs: 280,
+    swing: 0,
+    crackle: 0.07,
+    filterFreq: 1100,
+    kickSteps: [0],
+    snareSteps: [],
+    hatSteps: [],
+    bass: null,
+    bassNotes: [],
+    chords: [
+      [130.81, 164.81, 196.0, 261.63],
+      [110.0, 164.81, 220.0, 261.63],
+      [174.61, 220.0, 261.63, 329.63],
+      [196.0, 246.94, 293.66, 392.0],
+    ],
+  },
+};
+
+function lofiCurrentStyle() {
+  return LOFI_STYLES[lofiStyleName] || LOFI_STYLES.lofi;
+}
 
 function lofiNoise() {
   if (!lofiNoiseBuffer) {
@@ -262,16 +334,30 @@ function playLofiHat(time) {
   src.stop(time + 0.06);
 }
 
-function playLofiChord(frequencies, time) {
-  const hold = (LOFI_STEP_MS / 1000) * 15;
+function playLofiBass(frequency, time) {
+  const osc = ambientContext.createOscillator();
+  osc.type = "sine";
+  osc.frequency.value = frequency;
+  const gain = ambientContext.createGain();
+  gain.gain.setValueAtTime(0.0001, time);
+  gain.gain.exponentialRampToValueAtTime(0.3, time + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.45);
+  osc.connect(gain);
+  gain.connect(ambientGain);
+  osc.start(time);
+  osc.stop(time + 0.5);
+}
+
+function playLofiChord(frequencies, time, style) {
+  const hold = (style.stepMs / 1000) * 15;
   const filter = ambientContext.createBiquadFilter();
   filter.type = "lowpass";
-  filter.frequency.value = 1400;
+  filter.frequency.value = style.filterFreq;
 
   const gain = ambientContext.createGain();
   gain.gain.setValueAtTime(0.0001, time);
   gain.gain.linearRampToValueAtTime(0.11, time + 0.6);
-  gain.gain.setValueAtTime(0.11, time + hold - 1.2);
+  gain.gain.setValueAtTime(0.11, time + Math.max(0.7, hold - 1.2));
   gain.gain.exponentialRampToValueAtTime(0.0001, time + hold);
 
   filter.connect(gain);
@@ -288,7 +374,7 @@ function playLofiChord(frequencies, time) {
   });
 }
 
-function startLofiCrackle() {
+function startLofiCrackle(level) {
   const src = ambientContext.createBufferSource();
   src.buffer = lofiNoise();
   src.loop = true;
@@ -297,7 +383,7 @@ function startLofiCrackle() {
   filter.frequency.value = 3500;
   filter.Q.value = 0.4;
   const gain = ambientContext.createGain();
-  gain.gain.value = 0.05;
+  gain.gain.value = level;
   src.connect(filter);
   filter.connect(gain);
   gain.connect(ambientGain);
@@ -306,36 +392,65 @@ function startLofiCrackle() {
 }
 
 function lofiTick() {
+  const style = lofiCurrentStyle();
   const now = ambientContext.currentTime;
   const stepInBar = lofiStep % 16;
   const bar = Math.floor(lofiStep / 16);
 
   if (stepInBar === 0) {
-    playLofiChord(LOFI_CHORDS[bar % LOFI_CHORDS.length], now);
+    playLofiChord(style.chords[bar % style.chords.length], now, style);
   }
-  if (stepInBar === 0 || stepInBar === 8) {
+  if (style.kickSteps.indexOf(stepInBar) !== -1) {
     playLofiKick(now);
   }
-  if (stepInBar === 4 || stepInBar === 12) {
+  if (style.snareSteps.indexOf(stepInBar) !== -1) {
     playLofiSnare(now);
   }
-  if (stepInBar % 2 === 0) {
+  if (style.hatSteps.indexOf(stepInBar) !== -1) {
     playLofiHat(now);
+  }
+  if (style.bass === "walk" && stepInBar % 4 === 0) {
+    playLofiBass(style.bassNotes[bar % style.bassNotes.length], now);
+  } else if (style.bass === "root" && stepInBar % 8 === 0) {
+    playLofiBass(style.bassNotes[bar % style.bassNotes.length], now);
   }
 
   lofiStep += 1;
 }
 
-function startLofi() {
+function lofiNextDelay() {
+  const style = lofiCurrentStyle();
+  if (!style.swing) {
+    return style.stepMs;
+  }
+  const nextStep = lofiStep % 16;
+  const justPlayed = (lofiStep - 1) % 16;
+  if (nextStep % 4 === 2) {
+    return style.stepMs * (1 + style.swing);
+  }
+  if (justPlayed % 4 === 2) {
+    return style.stepMs * (1 - style.swing);
+  }
+  return style.stepMs;
+}
+
+function scheduleLofiTick() {
+  lofiTick();
+  lofiTimeoutId = setTimeout(scheduleLofiTick, lofiNextDelay());
+}
+
+function startLofi(styleName) {
+  lofiStyleName = LOFI_STYLES[styleName] ? styleName : "lofi";
+  const style = lofiCurrentStyle();
+
   ambientGain = ambientContext.createGain();
-  ambientGain.gain.value = baseGainFor("lofi") * (loadAmbientVolume() / 100);
+  ambientGain.gain.value = baseGainFor(lofiStyleName) * (loadAmbientVolume() / 100);
   ambientGain.connect(ambientContext.destination);
 
-  startLofiCrackle();
+  startLofiCrackle(style.crackle);
 
   lofiStep = 0;
-  lofiTick();
-  lofiIntervalId = setInterval(lofiTick, LOFI_STEP_MS);
+  scheduleLofiTick();
 }
 
 function startAmbientAudio(type) {
@@ -349,8 +464,8 @@ function startAmbientAudio(type) {
     return;
   }
 
-  if (type === "lofi") {
-    startLofi();
+  if (type.indexOf("lofi") === 0) {
+    startLofi(type);
     ambientType = type;
     ambientPlaying = true;
     return;

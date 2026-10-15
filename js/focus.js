@@ -554,3 +554,10 @@ document.addEventListener("keydown", function (event) {
     exitFocusView();
   }
 });
+
+const exitFocusBtn = document.getElementById("exitFocusBtn");
+if (exitFocusBtn) {
+  exitFocusBtn.addEventListener("click", function () {
+    exitFocusView();
+  });
+}

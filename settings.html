@@ -11,6 +11,13 @@
 <body>
   <div id="photoOverlay" class="photo-overlay" aria-hidden="true"></div>
 
+  <button class="icon-btn back-btn" type="button" aria-label="Go back">
+    <svg class="icon-btn-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+      <path d="M19 12H5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M11 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+
   <nav class="nav" aria-label="Main navigation">
     <a class="nav-link" href="focus.html">Focus</a>
     <a class="nav-link is-active" href="settings.html" aria-current="page">Customize</a>
@@ -43,6 +50,9 @@
       <button class="audio-option is-active" data-ambient="off" type="button">Off</button>
       <button class="audio-option" data-ambient="piano" type="button">Piano</button>
       <button class="audio-option" data-ambient="lofi" type="button">Lo-fi</button>
+      <button class="audio-option" data-ambient="lofi-jazz" type="button">Lo-fi jazz</button>
+      <button class="audio-option" data-ambient="lofi-beats" type="button">Lo-fi beats</button>
+      <button class="audio-option" data-ambient="lofi-chill" type="button">Lo-fi chill</button>
       <button class="audio-option" data-ambient="rain" type="button">Rain</button>
       <button class="audio-option" data-ambient="noise" type="button">Brown noise</button>
       <button class="audio-option" data-ambient="wind" type="button">Wind</button>
@@ -96,6 +106,24 @@
           <button class="theme-btn" data-theme="ocean" type="button" aria-pressed="false">
             <span class="theme-swatch" style="background-image: linear-gradient(135deg, #b6dce4, #bad2eb, #c0e8e0)"></span>Ocean
           </button>
+          <button class="theme-btn" data-theme="blush" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #f6dfe4"></span>Blush
+          </button>
+          <button class="theme-btn" data-theme="mint" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #d2ebe0"></span>Mint
+          </button>
+          <button class="theme-btn" data-theme="sky" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #d9ebf6"></span>Sky
+          </button>
+          <button class="theme-btn" data-theme="lilac" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #f0e2ee"></span>Lilac
+          </button>
+          <button class="theme-btn" data-theme="coral" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-color: #f6ddd2"></span>Coral
+          </button>
+          <button class="theme-btn" data-theme="cotton" type="button" aria-pressed="false">
+            <span class="theme-swatch" style="background-image: linear-gradient(135deg, #f4c6d8, #bcd6f0, #d4c6ee)"></span>Cotton
+          </button>
         </div>
 
         <h3 class="settings-subheading">Your photo</h3>
@@ -139,6 +167,9 @@
           <button class="mode-btn" data-ambient="ocean" type="button">Ocean</button>
           <button class="mode-btn" data-ambient="piano" type="button">Piano</button>
           <button class="mode-btn" data-ambient="lofi" type="button">Lo-fi</button>
+          <button class="mode-btn" data-ambient="lofi-jazz" type="button">Lo-fi jazz</button>
+          <button class="mode-btn" data-ambient="lofi-beats" type="button">Lo-fi beats</button>
+          <button class="mode-btn" data-ambient="lofi-chill" type="button">Lo-fi chill</button>
         </div>
         <label class="settings-slider" for="ambientVolume">
           Volume
@@ -160,5 +191,6 @@
   <script src="js/audio.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/fullscreen.js"></script>
+  <script src="js/back.js"></script>
 </body>
 </html>
